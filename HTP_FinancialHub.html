@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTP – Financial Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --border: #1f2433;
+    --accent: #c8a96e;
+    --accent2: #4f8ef7;
+    --text: #e8eaf0;
+    --muted: #7a7f96;
+    --green: #3ecf8e;
+    --red: #f76f72;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .logo-block h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .logo-block p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.35rem;
+  }
+
+  .timestamp {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .timestamp span {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .card-icon.gold { background: rgba(200,169,110,0.12); }
+  .card-icon.blue { background: rgba(79,142,247,0.12); }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .card-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    text-transform: uppercase;
+  }
+
+  .tag.gold { background: rgba(200,169,110,0.1); color: var(--accent); border: 1px solid rgba(200,169,110,0.2); }
+  .tag.blue { background: rgba(79,142,247,0.1); color: var(--accent2); border: 1px solid rgba(79,142,247,0.2); }
+  .tag.green { background: rgba(62,207,142,0.1); color: var(--green); border: 1px solid rgba(62,207,142,0.2); }
+
+  .card-footer {
+    margin-top: auto;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.15s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn:hover { opacity: 0.85; transform: scale(0.98); }
+
+  .btn-primary { background: var(--accent); color: #0d0f14; }
+  .btn-secondary { background: var(--border); color: var(--text); }
+  .btn-blue { background: var(--accent2); color: #fff; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0.5rem 0;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+    margin-right: 0.35rem;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .note-box {
+    background: rgba(200,169,110,0.05);
+    border: 1px solid rgba(200,169,110,0.12);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 2rem auto 0;
+  }
+
+  .note-box strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-block">
+    <h1>HTP Financial Hub</h1>
+    <p>High Tech Project S.r.l. &nbsp;·&nbsp; Palazzolo sull'Oglio</p>
+  </div>
+  <div class="timestamp">
+    Aggiornato al
+    <span id="today"></span>
+  </div>
+</header>
+
+<div class="grid">
+
+  <!-- CASHFLOW -->
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="card-icon gold">💰</div>
+      <div>
+        <div class="card-title">Cash Flow & P&L</div>
+        <div class="card-desc" style="margin-top:0.3rem;">Proiezioni Luglio 2026 – Dicembre 2027</div>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag gold">Cash Flow</span>
+      <span class="tag gold">Conto Economico</span>
+      <span class="tag green">KPI Bancari</span>
+      <span class="tag gold">Portafoglio Ordini</span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="card-desc">
+      Modello interattivo con slider parametrici su ricavi, DSO/DPO, costo lavoro, royalties, CIG 2026/2027. Include tab: grafico CF mensile, P&L reclassificato, rating bancario, piano mutui.
+    </div>
+
+    <div class="meta-row">
+      <span><span class="status-dot"></span>Ultima versione: 8 Giu 2026</span>
+      <span>Bilancio 2024 + 2025 ✓</span>
+    </div>
+
+    <div class="card-footer">
+      <a class="btn btn-primary" href="https://alexanderforesti1976.github.io/HTP-CashFlow" target="_blank">
+        🚀 Apri modello
+      </a>
+    </div>
+  </div>
+
+  <!-- CONTABILITÀ INDUSTRIALE -->
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="card-icon blue">🏭</div>
+      <div>
+        <div class="card-title">Contabilità Industriale</div>
+        <div class="card-desc" style="margin-top:0.3rem;">Cost accounting & analisi clienti 2024–2026</div>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag blue">Cost Center</span>
+      <span class="tag blue">Break-even</span>
+      <span class="tag green">Redditività Clienti</span>
+      <span class="tag blue">Costo Orario Macchina</span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="card-desc">
+      Modello interattivo con conto economico a valore aggiunto, struttura costi, HHI concentrazione clienti, break-even mensile (~€263k) e simulatore costo orario presse. Confronto metodo HTP vs full-cost absorption.
+    </div>
+
+    <div class="meta-row">
+      <span><span class="status-dot"></span>Ultima versione: 9 Giu 2026</span>
+      <span>6 presse · 1 turno ✓</span>
+    </div>
+
+    <div class="card-footer">
+      <a class="btn btn-blue" href="https://alexanderforesti1976.github.io/HTP-Contabilita" target="_blank">
+        🚀 Apri modello
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="note-box" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+  <span><strong>💡 Aggiungi questa board ai preferiti</strong> del browser o alla home del telefono per accesso immediato.</span>
+  <a class="btn btn-secondary" href="https://drive.google.com/file/d/1eghPYvhkd4wWu7wUUfuEOzPO_zE42HQT/view" target="_blank" style="font-size:0.78rem;padding:0.45rem 0.9rem;white-space:nowrap;">📂 Board su Drive</a>
+</div>
+
+<script>
+  const d = new Date();
+  const opts = { day: '2-digit', month: 'long', year: 'numeric' };
+  document.getElementById('today').textContent = d.toLocaleDateString('it-IT', opts);
+</script>
+
+</body>
+</html>
